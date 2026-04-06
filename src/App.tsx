@@ -1,8 +1,13 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import { AuthPage } from './pages/AuthPage'
+import { Layout } from './components/Layout'
+import { ProductsPage } from './pages/ProductsPage'
+import { SkinLogPage } from './pages/SkinLogPage'
+import { SettingsPage } from './pages/SettingsPage'
 
 function App() {
-  const { user, loading, signOut } = useAuth()
+  const { user, loading } = useAuth()
 
   if (loading) {
     return (
@@ -13,22 +18,22 @@ function App() {
   }
 
   if (!user) {
-    return <AuthPage />
+    return (
+      <Routes>
+        <Route path="*" element={<AuthPage />} />
+      </Routes>
+    )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm text-center">
-        <h1 className="text-2xl font-bold text-teal-600 mb-4">🌿 ログイン成功！</h1>
-        <p className="text-gray-700 mb-6">{user.email}</p>
-        <button
-          onClick={() => signOut()}
-          className="bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600"
-        >
-          ログアウト
-        </button>
-      </div>
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<ProductsPage />} />
+        <Route path="skin-log" element={<SkinLogPage />} />
+        <Route path="settings" element={<SettingsPage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 
