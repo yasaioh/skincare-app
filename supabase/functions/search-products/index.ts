@@ -106,14 +106,17 @@ Deno.serve(async (req: Request) => {
   const data = await res.json() as { hits?: YahooHit[] }
 
   const hits: ProductHit[] = (data.hits ?? [])
+    // Yahoo! は値が無いとき null ではなく空文字を返すことがある。
+    // 空文字のまま DB に入れると NULL と別物として扱われ、重複判定が壊れるため
+    // ?? ではなく || で null に寄せる。
     .map((h): ProductHit => ({
       name: h.name ?? "",
-      brand: h.brand?.name ?? null,
-      janCode: h.janCode ?? null,
-      imageUrl: h.image?.medium ?? h.image?.small ?? null,
+      brand: h.brand?.name || null,
+      janCode: h.janCode || null,
+      imageUrl: h.image?.medium || h.image?.small || null,
       price: typeof h.price === "number" ? h.price : null,
-      itemUrl: h.url ?? null,
-      itemCode: h.code ?? null,
+      itemUrl: h.url || null,
+      itemCode: h.code || null,
     }))
     .filter((h) => h.name !== "")
 
