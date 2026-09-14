@@ -42,7 +42,11 @@ API キーはすべて Edge Function 側にあり、ブラウザには渡らな�
 
 ### 2-1. Edge Function 用のキー
 
-`supabase/functions/.env` を作る（`.gitignore` 済み）。
+`supabase/functions/.env` を作る（`.gitignore` 済み）。**必ずエディタで「ファイル」として作ること。**
+
+> このパスが存在しない状態で `functions serve` を実行すると、Docker がマウント先として
+> **同名の空ディレクトリを作ってしまう**。そうなると `node: ... invalid format` で起動できない。
+> 起動より先にファイルを作っておくこと（対処法は 6 章）。
 
 ```bash
 YAHOO_APP_ID=取得したClientID
@@ -77,8 +81,8 @@ DB を作り直したいときだけ `npx supabase db reset`（**全データが
 ## 3. PC で動かす（ターミナル2つ）
 
 ```bash
-# ターミナル1: Edge Functions
-npx supabase functions serve --env-file supabase/functions/.env
+# ターミナル1: Edge Functions（supabase/functions/.env は既定で読まれる）
+npx supabase functions serve
 
 # ターミナル2: 画面
 npm run dev
@@ -177,7 +181,8 @@ npm i zxing-wasm
 |---|---|
 | `Blocked request. This host is not allowed` | 使っているトンネルのドメインが `vite.config.ts` の `allowedHosts` に無い。そのドメインを追加する |
 | スマホで画面は出るがログインできない | `supabase start` が動いていない。または `.env.local` が `same-origin` になっていない |
-| `YAHOO_APP_ID が設定されていません` | `functions serve` に `--env-file` を渡していない、または起動し直していない |
+| `node: supabase/functions/.env: invalid format` | `.env` がファイルではなくディレクトリになっている（2-1 の注記）。`rmdir supabase/functions/.env` で消してから、エディタでファイルとして作り直す。`rmdir` は空のときしか成功しないので安全 |
+| `YAHOO_APP_ID が設定されていません` | `supabase/functions/.env` が無い、キー名が違う、または起動し直していない |
 | `API key not valid`（502） | `GEMINI_API_KEY` が誤っている |
 | `検索が混み合っています`（429） | Yahoo! は 1クエリ/秒 制限。少し待つ |
 | 検索結果が 0 件 | キーワードを短くする。JAN検索は商品が Yahoo! に無いとヒットしない |
