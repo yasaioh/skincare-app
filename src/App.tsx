@@ -3,6 +3,7 @@ import { useAuth } from './hooks/useAuth'
 import { AuthPage } from './pages/AuthPage'
 import { Layout } from './components/Layout'
 import { ProductsPage } from './pages/ProductsPage'
+import { IngredientsPage } from './pages/IngredientsPage'
 import { SkinLogPage } from './pages/SkinLogPage'
 import { SettingsPage } from './pages/SettingsPage'
 
@@ -29,6 +30,7 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<ProductsPage />} />
+        <Route path="products/:productId/ingredients" element={<IngredientsPage />} />
         <Route path="skin-log" element={<SkinLogPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>

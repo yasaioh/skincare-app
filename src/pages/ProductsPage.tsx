@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useProducts } from '../hooks/useProducts'
 
 export function ProductsPage() {
+  const navigate = useNavigate()
   const { user } = useAuth()
   const {
     searchResults,
@@ -67,6 +69,14 @@ export function ProductsPage() {
                     {up.products.category}
                   </span>
                 )}
+                <div className="mt-2">
+                  <button
+                    onClick={() => navigate(`/products/${up.product_id}/ingredients`)}
+                    className="rounded-md bg-teal-500 px-3 py-1 text-xs font-medium text-white hover:bg-teal-600"
+                  >
+                    成分を見る
+                  </button>
+                </div>
               </div>
             ))}
           </div>
