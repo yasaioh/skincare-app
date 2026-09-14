@@ -115,14 +115,17 @@ npm run dev
 ターミナルを 1 つ増やし、**3 つ目**で実行する。
 
 ```bash
-npx cloudflared tunnel --url http://localhost:5173
+npx untun@latest tunnel http://localhost:5173
 ```
 
 表示された `https://xxxx-xxxx.trycloudflare.com` をスマホで開く。
 
-**Cloudflare Quick Tunnel を推奨する理由**: アカウント登録が不要で、HTTPS が標準で付く。
-ngrok（`npx ngrok http 5173`）や localtunnel（`npx localtunnel --port 5173`）でも動くよう、
-主要なドメインは `vite.config.ts` の `allowedHosts` に登録済み。
+**untun を推奨する理由**: Cloudflare の Quick Tunnel を npx から直接使えるため、
+別途インストールが不要で、アカウント登録もなしに HTTPS が付く。
+うまくいかない場合は localtunnel（`npx localtunnel --port 5173`）を使う。
+どちらのドメインも `vite.config.ts` の `allowedHosts` に登録済みなので設定変更は要らない。
+
+> 初回実行時に Cloudflare のライセンス・利用規約への同意が求められる点に注意。
 
 ### 4-2. Vite をトンネル用に起動する
 
