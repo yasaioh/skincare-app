@@ -27,3 +27,8 @@ dist-ssr
 # Edge Function のローカル用シークレット（YAHOO_APP_ID / GEMINI_API_KEY）
 supabase/functions/.env
 supabase/.env
+
+# Supabase CLI が実行時に書き出す作業ディレクトリ。
+# functions serve を実行すると start-secrets/ に API キーが平文で書き出されるため、
+# ファイル単位ではなくディレクトリごと除外する。
+supabase/.temp/
