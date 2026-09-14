@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 .env.local
+
+# Edge Function のローカル用シークレット（YAHOO_APP_ID / GEMINI_API_KEY）
+supabase/functions/.env
+supabase/.env
