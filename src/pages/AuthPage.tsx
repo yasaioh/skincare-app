@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { useAuth } from '../hooks/useAuth'
+import { useAuthStore } from '../store/authStore'
 
 export function AuthPage() {
-  const { signIn, signUp } = useAuth()
+  const signIn = useAuthStore((s) => s.signIn)
+  const signUp = useAuthStore((s) => s.signUp)
   const [isLogin, setIsLogin]   = useState(true)
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')

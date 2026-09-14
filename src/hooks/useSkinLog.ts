@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { useAuth } from './useAuth'
+import { useAuthStore } from '../store/authStore'
 import type { Database } from '../types/database.types'
 
 type SkinLog = Database['public']['Tables']['skin_logs']['Row']
 
 export function useSkinLog() {
-  const { user } = useAuth()
+  const user = useAuthStore((s) => s.user)
   const [logs, setLogs] = useState<SkinLog[]>([])
   const [loading, setLoading] = useState(true)
 

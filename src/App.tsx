@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from './hooks/useAuth'
+import { useAuthStore } from './store/authStore'
 import { AuthPage } from './pages/AuthPage'
 import { Layout } from './components/Layout'
 import { ProductsPage } from './pages/ProductsPage'
@@ -8,7 +8,8 @@ import { SkinLogPage } from './pages/SkinLogPage'
 import { SettingsPage } from './pages/SettingsPage'
 
 function App() {
-  const { user, loading } = useAuth()
+  const user = useAuthStore((s) => s.user)
+  const loading = useAuthStore((s) => s.loading)
 
   if (loading) {
     return (

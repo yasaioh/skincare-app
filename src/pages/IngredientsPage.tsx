@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
+import { useAuthStore } from '../store/authStore'
 import { supabase } from '../lib/supabase'
 
 type Ingredient = {
@@ -18,7 +18,7 @@ type ProductInfo = {
 export function IngredientsPage() {
   const { productId } = useParams<{ productId: string }>()
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const user = useAuthStore((s) => s.user)
 
   const [product, setProduct] = useState<ProductInfo | null>(null)
   const [ingredients, setIngredients] = useState<Ingredient[]>([])
@@ -54,7 +54,7 @@ export function IngredientsPage() {
       if (piError) {
         setError(piError.message)
       } else {
-        const mapped = (piData ?? []).map((row: any) => ({
+        const mapped = (piData ?? []).map((row) => ({
           id: row.ingredients.id,
           name_ja: row.ingredients.name_ja,
           name_inci: row.ingredients.name_inci,

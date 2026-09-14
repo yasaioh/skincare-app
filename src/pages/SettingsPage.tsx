@@ -1,7 +1,8 @@
-import { useAuth } from '../hooks/useAuth'
+import { useAuthStore } from '../store/authStore'
 
 export function SettingsPage() {
-  const { user, signOut } = useAuth()
+  const user = useAuthStore((s) => s.user)
+  const signOut = useAuthStore((s) => s.signOut)
 
   return (
     <div className="p-4">

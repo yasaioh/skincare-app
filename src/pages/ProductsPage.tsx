@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
+import { useAuthStore } from '../store/authStore'
 import { useProducts } from '../hooks/useProducts'
 
 export function ProductsPage() {
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const user = useAuthStore((s) => s.user)
   const {
     searchResults,
     userProducts,
