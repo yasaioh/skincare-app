@@ -115,17 +115,30 @@ npm run dev
 ターミナルを 1 つ増やし、**3 つ目**で実行する。
 
 ```bash
-npx untun@latest tunnel http://localhost:5173
+ssh -R 80:localhost:5173 serveo.net
 ```
 
-表示された `https://xxxx-xxxx.trycloudflare.com` をスマホで開く。
+表示された HTTPS の URL（`https://xxxx.serveo.net` など）をスマホで開く。
 
-**untun を推奨する理由**: Cloudflare の Quick Tunnel を npx から直接使えるため、
-別途インストールが不要で、アカウント登録もなしに HTTPS が付く。
-うまくいかない場合は localtunnel（`npx localtunnel --port 5173`）を使う。
-どちらのドメインも `vite.config.ts` の `allowedHosts` に登録済みなので設定変更は要らない。
+**serveo を推奨する理由**: `ssh` だけで完結し、インストールもアカウント登録も要らない。
+初回接続時にホストキーの確認（`yes` と入力）が出る。
 
-> 初回実行時に Cloudflare のライセンス・利用規約への同意が求められる点に注意。
+うまくいかない場合の代替（下にいくほど手間が増える）:
+
+```bash
+# localhost.run（同じく ssh のみ）
+ssh -R 80:localhost:5173 nokey@localhost.run
+
+# localtunnel
+npx localtunnel --port 5173
+
+# untun（内部で cloudflared を使う。初回はバイナリのダウンロードが走る）
+#   注意: untun@0.2.2 は bin に shebang が無く `npx untun` では起動できない。
+#   ImageMagick の import が実行されて妙なエラーになるため、node に直接読ませる。
+npm i -D untun && node node_modules/untun/dist/cli.mjs tunnel http://localhost:5173
+```
+
+いずれのドメインも `vite.config.ts` の `allowedHosts` に登録済みなので設定変更は要らない。
 
 ### 4-2. Vite をトンネル用に起動する
 
@@ -183,6 +196,7 @@ npm i zxing-wasm
 | 症状 | 原因と対処 |
 |---|---|
 | `Blocked request. This host is not allowed` | 使っているトンネルのドメインが `vite.config.ts` の `allowedHosts` に無い。そのドメインを追加する |
+| `import-im6.q16: unable to open image ...` | `npx untun` が shebang 欠落で起動できていない（パッケージ側の不具合）。4-1 の代替手段を使う |
 | スマホで画面は出るがログインできない | `supabase start` が動いていない。または `.env.local` が `same-origin` になっていない |
 | `node: supabase/functions/.env: invalid format` | `.env` がファイルではなくディレクトリになっている（2-1 の注記）。`rmdir supabase/functions/.env` で消してから、エディタでファイルとして作り直す。`rmdir` は空のときしか成功しないので安全 |
 | `YAHOO_APP_ID が設定されていません` | `supabase/functions/.env` が無い、キー名が違う、または起動し直していない |

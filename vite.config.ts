@@ -15,7 +15,15 @@ export default defineConfig({
     // トンネルの URL は起動ごとに変わるため、ドメイン全体を許可する。
     // 先頭の "." はそのドメインのサブドメインすべてを含む指定。
     // allowedHosts: true は任意のサイトから開発サーバーを叩けてしまうため使わない。
-    allowedHosts: ['.trycloudflare.com', '.ngrok-free.app', '.ngrok.app', '.loca.lt'],
+    allowedHosts: [
+      '.trycloudflare.com', // cloudflared / untun
+      '.ngrok-free.app',
+      '.ngrok.app',
+      '.loca.lt', // localtunnel
+      '.serveo.net', // serveo（ssh のみで使える）
+      '.lhr.life', // localhost.run
+      '.localhost.run',
+    ],
 
     // Supabase 宛ての通信を同一オリジンで中継する。
     // これによりトンネルは 5173 の 1 本で済み、
