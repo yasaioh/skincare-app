@@ -138,7 +138,12 @@ npx localtunnel --port 5173
 npm i -D untun && node node_modules/untun/dist/cli.mjs tunnel http://localhost:5173
 ```
 
-いずれのドメインも `vite.config.ts` の `allowedHosts` に登録済みなので設定変更は要らない。
+いずれのドメインも `vite.config.ts` の `allowedHosts` に登録済みなので、通常は設定変更は要らない。
+
+> トンネル業者は**案内と違うドメインで URL を発行することがある**。
+> 例: serveo は `serveo.net` ではなく `xxxx.serveousercontent.com` を発行する。
+> `Blocked request` が出たら、表示されたドメインを `allowedHosts` に
+> 先頭ドット付き（`.serveousercontent.com` の形）で追加すればよい。
 
 ### 4-2. Vite をトンネル用に起動する
 

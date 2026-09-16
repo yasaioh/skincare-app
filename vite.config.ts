@@ -21,6 +21,7 @@ export default defineConfig({
       '.ngrok.app',
       '.loca.lt', // localtunnel
       '.serveo.net', // serveo（ssh のみで使える）
+      '.serveousercontent.com', // serveo が実際に発行するドメインはこちら
       '.lhr.life', // localhost.run
       '.localhost.run',
     ],
