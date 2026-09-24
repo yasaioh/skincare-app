@@ -106,6 +106,39 @@ npx supabase functions deploy
 
 ### 5. Vercel にデプロイする
 
+方法は 2 つある。**初回は 5-A の GitHub 連携を推奨**（以降 `git push` だけで自動デプロイされる）。
+
+#### 5-A. GitHub 連携（推奨）
+
+```bash
+git push origin main
+```
+
+そのうえで [vercel.com](https://vercel.com) → **Add New → Project** →
+`yasaioh/skincare-app` を Import。設定は以下だけ確認する。
+
+| 項目 | 値 |
+|---|---|
+| Framework Preset | Vite（自動検出される） |
+| Build Command | `npm run build`（既定のまま） |
+| Output Directory | `dist`（既定のまま） |
+| Production Branch | `main` |
+
+**Environment Variables** に次の 2 つを追加してから Deploy する。
+値は Supabase ダッシュボードの Project Settings → API から取得する。
+
+| 名前 | 値 |
+|---|---|
+| `VITE_SUPABASE_URL` | `https://xosaccpkcsqxnmqnnfka.supabase.co` |
+| `VITE_SUPABASE_ANON_KEY` | anon / publishable キー |
+
+> `VITE_SUPABASE_URL` を忘れる、あるいは `same-origin` と入れると、
+> 画面は出るが起動時に例外で止まる（意図的にそうしてある）。
+
+以降は `git push origin main` するだけで再デプロイされる。
+
+#### 5-B. CLI から手動で
+
 ```bash
 npx vercel login
 npx vercel link          # プロジェクトを作成・紐付け
