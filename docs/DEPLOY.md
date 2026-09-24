@@ -104,6 +104,30 @@ npx supabase functions deploy
 `search-products` と `parse-ingredients` の 2 つが配信される。
 `config.toml` の `verify_jwt = true` が効くので、ログイン済みユーザーのみ呼べる。
 
+### 4-2. ダッシュボードで認証設定を直す（重要）
+
+`config.toml` の `[auth]` 設定は**ローカル専用で、クラウドには反映されていない**。
+実際に `supabase config diff` で比較すると、本番は次のようになっている。
+
+| 設定 | ローカル | 本番の既定 | 放置すると |
+|---|---|---|---|
+| `auth.email.enable_confirmations` | false | **true** | 新規登録にメール確認が必要 |
+| `auth.site_url` | 127.0.0.1:3000 | **localhost:3000** | 確認メールのリンクが localhost を指し、スマホから踏めない |
+
+この 2 つが重なると「登録したがメールのリンクが死んでいて進めない」状態になる。
+**Authentication → Sign In / Providers → Email** で次のどちらかを行う。
+
+- **Confirm email を OFF にする**（プロトタイプ向け。ローカルと挙動が揃う）
+- ON のままにするなら、**Authentication → URL Configuration** の Site URL を
+  Vercel の本番 URL に変更する（そうしないとリンクが機能しない）
+
+> **`supabase config push` は使わないこと。**
+> ローカルの config.toml は `supabase init` のテンプレート値を多く含むため、
+> push すると本番の意図した設定を上書きする。実際にこのプロジェクトで差分を取ると、
+> MFA(TOTP) の無効化・Twilio SMS の無効化・メール送信レート制限の緩和（1分→1秒）・
+> OTP 桁数の低下（8→6）・Site URL の localhost 化がまとめて適用されてしまう。
+> 変更したい項目だけダッシュボードで直すのが安全。差分の確認は `supabase config diff`。
+
 ### 5. Vercel にデプロイする
 
 方法は 2 つある。**初回は 5-A の GitHub 連携を推奨**（以降 `git push` だけで自動デプロイされる）。
