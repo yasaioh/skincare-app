@@ -161,6 +161,24 @@ git push origin main
 
 以降は `git push origin main` するだけで再デプロイされる。
 
+#### 5-A-2. Deployment Protection を外す（チーム配下の場合は必須）
+
+チーム配下のプロジェクトでは **Vercel Authentication が既定で有効**になり、
+本番ドメインも含めて全デプロイが Vercel の SSO ログインへリダイレクトされる。
+この状態ではスマホからアクセスできない。
+
+**Settings → Deployment Protection → Vercel Authentication → Disabled**
+
+確認方法（保護されていると `vercel.com/sso-api` へ 302 する）:
+
+```bash
+curl -sI https://<本番ドメイン>/ | grep -i location
+```
+
+公開して差し支えない理由: アプリ自体に Supabase の認証があり、URL を知られても
+ログイン画面が出るだけ。データは全テーブルで RLS により本人に限定してあり、
+フロントに埋め込まれる anon / publishable キーは公開前提の設計。
+
 #### 5-B. CLI から手動で
 
 ```bash
