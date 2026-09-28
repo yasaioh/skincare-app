@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 const navItems = [
   { to: '/', label: '製品ログ', icon: '📦' },
   { to: '/skin-log', label: '肌ログ', icon: '📝' },
+  { to: '/analysis', label: '分析', icon: '📊' },
   { to: '/settings', label: '設定', icon: '⚙️' },
 ]
 
