@@ -5,6 +5,7 @@ import { Layout } from './components/Layout'
 import { ProductsPage } from './pages/ProductsPage'
 import { IngredientsPage } from './pages/IngredientsPage'
 import { SkinLogPage } from './pages/SkinLogPage'
+import { AnalysisPage } from './pages/AnalysisPage'
 import { SettingsPage } from './pages/SettingsPage'
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route index element={<ProductsPage />} />
         <Route path="products/:productId/ingredients" element={<IngredientsPage />} />
         <Route path="skin-log" element={<SkinLogPage />} />
+        <Route path="analysis" element={<AnalysisPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
